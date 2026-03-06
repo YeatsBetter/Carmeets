@@ -1,5 +1,5 @@
 import React from 'react';
-import { MapContainer, TileLayer, ZoomControl, Marker, Popup, Polyline } from 'react-leaflet';
+import { MapContainer, TileLayer, ZoomControl, Marker, Popup, Polyline, Circle } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import ShopCard from '../CoffeeShops/ShopCard';
 
@@ -15,7 +15,7 @@ let DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-const RouteMap = ({ shops = [], routeCoords = null, onNavigate, children }) => {
+const RouteMap = ({ shops = [], routeCoords = null, onNavigate, routeLength = 50, children }) => {
     // Center roughly around US East Coast (NY to HV)
     const position = [41.0, -74.0];
     const defaultZoom = 8;
@@ -39,10 +39,23 @@ const RouteMap = ({ shops = [], routeCoords = null, onNavigate, children }) => {
                 style={{ width: '100%', height: '100%' }}
                 zoomControl={false} // Disable default zoom to position it elsewhere if needed
             >
-                {/* Premium Dark Theme Tile Layer - CartoDB Dark Matter */}
+                {/* Premium High Contrast Street Map - CartoDB Voyager */}
                 <TileLayer
                     attribution='&copy; <a href="https://carto.com/">CARTO</a>'
-                    url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+                    url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+                />
+
+                {/* Radius Indicator */}
+                <Circle
+                    center={userLocation}
+                    radius={routeLength * 1609.34} /* Convert miles to meters */
+                    pathOptions={{
+                        color: 'var(--accent-primary)',
+                        fillColor: 'var(--accent-primary)',
+                        fillOpacity: 0.05,
+                        weight: 1,
+                        dashArray: '4, 6'
+                    }}
                 />
 
                 {/* Custom positioned Zoom Control */}

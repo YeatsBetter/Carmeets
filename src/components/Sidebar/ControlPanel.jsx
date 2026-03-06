@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Settings, Map, Coffee } from 'lucide-react';
 
-const ControlPanel = () => {
-    const [routeLength, setRouteLength] = useState(50);
+const ControlPanel = ({ routeLength, setRouteLength, onSurpriseMe, isRouting }) => {
 
     return (
         <div className="glass-panel" style={{ width: '380px', padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -40,8 +39,13 @@ const ControlPanel = () => {
             </div>
 
             {/* Action Button */}
-            <button className="btn-primary" style={{ marginTop: '12px' }}>
-                <Coffee size={18} /> Find Coffee & Curves
+            <button
+                className="btn-primary"
+                style={{ marginTop: '12px' }}
+                onClick={onSurpriseMe}
+                disabled={isRouting}
+            >
+                <Coffee size={18} /> {isRouting ? "Finding Route..." : "Find Coffee & Curves (Surprise Me)"}
             </button>
 
         </div>

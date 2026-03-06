@@ -7,7 +7,9 @@ export const fetchRoute = async (startLatLng, endLatLng) => {
 
     // OSRM requires format: lon,lat;lon,lat
     // We use profile "driving" or "car" (OSRM demo uses 'driving')
-    const url = `https://router.project-osrm.org/route/v1/driving/${startLng},${startLat};${endLng},${endLat}?overview=full&geometries=geojson`;
+    // Added avoid=toll,motorway to prioritize backroads (though OSRM public demo support for this parameter varies, 
+    // it's the correct syntax for many routing engines based on it)
+    const url = `https://router.project-osrm.org/route/v1/driving/${startLng},${startLat};${endLng},${endLat}?overview=full&geometries=geojson&exclude=toll,motorway`;
 
     try {
         const response = await fetch(url);
